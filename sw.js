@@ -1,7 +1,7 @@
 // Service Worker — Regras de Jogo Handebol Indoor
 // SDInformática — Profª Synthia Duarte
 
-const CACHE_NAME = 'handball-arbitro-v2';
+const CACHE_NAME = 'handball-arbitro-v3';
 const ASSETS = [
   './',
   './index.html',
