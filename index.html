@@ -2018,9 +2018,8 @@ const ACESSO = {
     'handebol.26',
   ],
 
-  // Sempre exibir a tela de acesso ao abrir o app
+  // Sempre exibir a tela de acesso — limpa qualquer valor salvo anteriormente
   init() {
-    // Limpa qualquer valor salvo anteriormente para garantir que o código seja sempre pedido
     localStorage.removeItem(this.KEY);
     sessionStorage.removeItem(this.KEY);
   },
@@ -2138,36 +2137,32 @@ A.init();
   <script>
   const PWA = {
     promptEvent: null,
-    KEY: 'hb_pwa_fechado',
 
     init() {
-      // Capturar o evento de instalação
+      // Limpar qualquer supressão anterior do banner
+      localStorage.removeItem('hb_pwa_fechado');
+
+      // Capturar o evento de instalação — mostrar sempre que o browser permitir
       window.addEventListener('beforeinstallprompt', e => {
         e.preventDefault();
         this.promptEvent = e;
-        // Mostrar apenas se não fechou antes (ou fechou há mais de 3 dias)
-        const fechado = localStorage.getItem(this.KEY);
-        const diasFechado = fechado ? (Date.now() - parseInt(fechado)) / 86400000 : 999;
-        if(diasFechado > 3) this.mostrar();
+        this.mostrar();
       });
+
       // Se já instalado, esconder
       window.addEventListener('appinstalled', () => {
         this.esconder();
-        localStorage.removeItem(this.KEY);
       });
+
       // iOS — Safari não tem beforeinstallprompt, mostrar instrução manual
       const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
       if(isIOS && !isStandalone){
-        const fechado = localStorage.getItem(this.KEY);
-        const diasFechado = fechado ? (Date.now() - parseInt(fechado)) / 86400000 : 999;
-        if(diasFechado > 3){
-          document.getElementById('pwa-btn-install').textContent = '📋 Como instalar';
-          document.getElementById('pwa-btn-install').onclick = () => {
-            alert('No iPhone/iPad:\n1. Toque em Compartilhar (□↑)\n2. Role e toque em "Adicionar à Tela de Início"\n3. Toque em Adicionar');
-          };
-          setTimeout(() => this.mostrar(), 2000);
-        }
+        document.getElementById('pwa-btn-install').textContent = '📋 Como instalar';
+        document.getElementById('pwa-btn-install').onclick = () => {
+          alert('No iPhone/iPad:\n1. Toque em Compartilhar (□↑)\n2. Role e toque em "Adicionar à Tela de Início"\n3. Toque em Adicionar');
+        };
+        setTimeout(() => this.mostrar(), 2000);
       }
     },
 
@@ -2181,7 +2176,6 @@ A.init();
 
     fechar() {
       this.esconder();
-      localStorage.setItem(this.KEY, Date.now().toString());
     },
 
     instalar() {
