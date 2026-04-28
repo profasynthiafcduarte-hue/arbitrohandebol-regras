@@ -364,44 +364,55 @@
   .hist-clear-btn:hover{background:rgba(244,67,54,.15);color:#f44336}
 
 
-  /* Banner PWA */
-  #pwa-banner{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;
-    background:linear-gradient(135deg,#0d1f30,#1a3a5c);
-    border-top:1px solid rgba(255,107,0,.4);padding:12px 16px;
-    box-shadow:0 -4px 24px rgba(0,0,0,.5)}
-  #pwa-banner.show{display:flex;align-items:center;gap:12px;animation:slideUp .3s ease}
-  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-  .pwa-icon{font-size:2rem;flex-shrink:0}
-  .pwa-text{flex:1}
-  .pwa-title{font-family:'Bebas Neue',cursive;font-size:1rem;color:var(--orange);
-    letter-spacing:1.5px;line-height:1}
-  .pwa-sub{font-size:11px;color:rgba(255,255,255,.55);font-family:'Rajdhani',sans-serif;
-    margin-top:2px}
-  .pwa-btn-install{padding:8px 16px;background:var(--orange);border:none;
-    border-radius:8px;color:#fff;font-family:'Bebas Neue',cursive;
-    font-size:.9rem;letter-spacing:1px;cursor:pointer;white-space:nowrap;
-    box-shadow:0 2px 10px rgba(255,107,0,.4);transition:opacity .2s;flex-shrink:0}
-  .pwa-btn-install:hover{opacity:.85}
-  .pwa-btn-close{background:none;border:none;color:rgba(255,255,255,.3);
-    font-size:18px;cursor:pointer;padding:4px 6px;flex-shrink:0;transition:color .2s}
-  .pwa-btn-close:hover{color:rgba(255,255,255,.7)}
-
-  /* ── Botão flutuante de instalação ── */
-  #pwa-fab{display:none;position:fixed;bottom:22px;right:18px;z-index:150;
+  /* ── Modal PWA Install ── */
+  #pwa-overlay{display:none;position:fixed;inset:0;z-index:200;
+    background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
+    align-items:center;justify-content:center;padding:20px}
+  #pwa-overlay.show{display:flex;animation:pwaFadeIn .35s ease}
+  @keyframes pwaFadeIn{from{opacity:0}to{opacity:1}}
+  #pwa-card{background:linear-gradient(160deg,#0d1f30 0%,#081525 100%);
+    border:1px solid rgba(255,107,0,.35);border-radius:20px;
+    width:100%;max-width:400px;padding:28px 24px 22px;
+    box-shadow:0 0 60px rgba(255,107,0,.18),0 24px 60px rgba(0,0,0,.7);
+    animation:pwaSlideUp .4s cubic-bezier(.22,1,.36,1);position:relative}
+  @keyframes pwaSlideUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+  .pwa-close-x{position:absolute;top:14px;right:16px;background:none;border:none;
+    color:rgba(255,255,255,.25);font-size:20px;cursor:pointer;transition:color .2s;line-height:1}
+  .pwa-close-x:hover{color:rgba(255,255,255,.7)}
+  .pwa-header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .pwa-app-icon{width:56px;height:56px;border-radius:14px;
     background:linear-gradient(135deg,#FF6B00,#e05000);
-    border:none;border-radius:50px;padding:10px 16px 10px 12px;
-    color:#fff;font-family:'Bebas Neue',cursive;font-size:.85rem;
-    letter-spacing:1.5px;cursor:pointer;
-    box-shadow:0 4px 20px rgba(255,107,0,.55);
-    display:none;align-items:center;gap:7px;
-    animation:fabPop .4s cubic-bezier(.22,1,.36,1)}
-  #pwa-fab.visible{display:flex}
-  @keyframes fabPop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
-  #pwa-fab:hover{opacity:.9;transform:translateY(-2px)}
-  #pwa-fab:active{transform:translateY(0)}
-  .fab-dot{width:8px;height:8px;border-radius:50%;background:#fff;
-    animation:pulse 1.6s infinite}
-  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.8rem;flex-shrink:0;box-shadow:0 4px 16px rgba(255,107,0,.45)}
+  .pwa-modal-title{font-family:'Bebas Neue',cursive;font-size:1.35rem;
+    letter-spacing:2px;color:#fff;line-height:1}
+  .pwa-modal-sub{font-size:11.5px;color:rgba(255,255,255,.45);margin-top:3px;letter-spacing:.4px}
+  .pwa-divider{height:1px;background:rgba(255,255,255,.07);margin:0 0 18px}
+  .pwa-features{display:flex;gap:8px;margin-bottom:20px}
+  .pwa-feat{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+    border-radius:10px;padding:10px 8px;text-align:center}
+  .pwa-feat-icon{font-size:1.3rem;margin-bottom:4px}
+  .pwa-feat-label{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.3px}
+  .pwa-steps{margin-bottom:20px}
+  .pwa-step{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+  .pwa-step-num{width:24px;height:24px;border-radius:50%;
+    background:linear-gradient(135deg,#FF6B00,#e05000);
+    color:#fff;font-size:12px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    box-shadow:0 2px 8px rgba(255,107,0,.4)}
+  .pwa-step-text{font-size:13px;color:rgba(255,255,255,.75);line-height:1.5;padding-top:3px}
+  .pwa-step-text strong{color:#fff}
+  .pwa-install-btn{width:100%;padding:14px;border:none;border-radius:12px;
+    background:linear-gradient(135deg,#FF6B00,#e05000);color:#fff;
+    font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:2px;cursor:pointer;
+    box-shadow:0 4px 20px rgba(255,107,0,.5);transition:all .2s;
+    display:flex;align-items:center;justify-content:center;gap:8px}
+  .pwa-install-btn:hover{opacity:.9;transform:translateY(-1px)}
+  .pwa-install-btn:active{transform:translateY(0)}
+  .pwa-dismiss{width:100%;margin-top:10px;padding:10px;border:none;
+    background:none;color:rgba(255,255,255,.3);font-family:'Rajdhani',sans-serif;
+    font-size:12px;cursor:pointer;letter-spacing:.5px;transition:color .2s}
+  .pwa-dismiss:hover{color:rgba(255,255,255,.6)}
 
   /* ══════════════════════════════════════════════
      TELA DE ACESSO — CÓDIGO DE ENTRADA
@@ -2035,7 +2046,7 @@ const ACESSO = {
     'handebol.26',
   ],
 
-  // Sempre exibir a tela de acesso — limpa valores salvos
+  // Sempre exibir tela de acesso — sem persistência
   init() {
     localStorage.removeItem(this.KEY);
     sessionStorage.removeItem(this.KEY);
@@ -2066,10 +2077,7 @@ const ACESSO = {
     if (animado) {
       tela.style.transition = 'opacity .4s ease';
       tela.style.opacity = '0';
-      setTimeout(() => {
-        tela.style.display = 'none';
-        PWA.ativar();
-      }, 400);
+      setTimeout(() => { tela.style.display = 'none'; PWA.ativar(); }, 400);
     } else {
       tela.style.display = 'none';
       PWA.ativar();
@@ -2142,106 +2150,115 @@ A.init();
   </div>
 
 
-  <!-- ===== BOTÃO FLUTUANTE INSTALAR APP ===== -->
-  <button id="pwa-fab" onclick="PWA.mostrar()" title="Instalar o App">
-    <span class="fab-dot"></span> INSTALAR APP
-  </button>
-
-  <!-- ===== BANNER PWA INSTALAR APP ===== -->
-  <div id="pwa-banner">
-    <div class="pwa-icon">📱</div>
-    <div class="pwa-text">
-      <div class="pwa-title">Instalar App no Celular</div>
-      <div class="pwa-sub">Use offline · Acesso rápido · Sem navegador</div>
+  <!-- ===== MODAL PWA INSTALAR APP ===== -->
+  <div id="pwa-overlay">
+    <div id="pwa-card">
+      <button class="pwa-close-x" onclick="PWA.fechar()">✕</button>
+      <div class="pwa-header">
+        <div class="pwa-app-icon">🤾</div>
+        <div>
+          <div class="pwa-modal-title">Instalar o App</div>
+          <div class="pwa-modal-sub">ÁRBITRO HANDEBOL INDOOR · IHF 2025</div>
+        </div>
+      </div>
+      <div class="pwa-divider"></div>
+      <div class="pwa-features">
+        <div class="pwa-feat"><div class="pwa-feat-icon">📶</div><div class="pwa-feat-label">Funciona offline</div></div>
+        <div class="pwa-feat"><div class="pwa-feat-icon">⚡</div><div class="pwa-feat-label">Acesso rápido</div></div>
+        <div class="pwa-feat"><div class="pwa-feat-icon">🖥️</div><div class="pwa-feat-label">Sem navegador</div></div>
+      </div>
+      <div id="pwa-steps-android" class="pwa-steps" style="display:none">
+        <div class="pwa-step"><div class="pwa-step-num">1</div><div class="pwa-step-text">Toque no menu do Chrome <strong>⋮</strong> no canto superior direito</div></div>
+        <div class="pwa-step"><div class="pwa-step-num">2</div><div class="pwa-step-text">Toque em <strong>"Adicionar à tela inicial"</strong></div></div>
+        <div class="pwa-step"><div class="pwa-step-num">3</div><div class="pwa-step-text">Confirme tocando em <strong>Adicionar</strong></div></div>
+      </div>
+      <div id="pwa-steps-ios" class="pwa-steps" style="display:none">
+        <div class="pwa-step"><div class="pwa-step-num">1</div><div class="pwa-step-text">Toque no ícone <strong>Compartilhar □↑</strong> na barra do Safari</div></div>
+        <div class="pwa-step"><div class="pwa-step-num">2</div><div class="pwa-step-text">Role e toque em <strong>"Adicionar à Tela de Início"</strong></div></div>
+        <div class="pwa-step"><div class="pwa-step-num">3</div><div class="pwa-step-text">Toque em <strong>Adicionar</strong> no canto superior direito</div></div>
+      </div>
+      <div id="pwa-steps-desktop" class="pwa-steps" style="display:none">
+        <div class="pwa-step"><div class="pwa-step-num">1</div><div class="pwa-step-text">Clique no ícone <strong>⊕</strong> na barra de endereço do navegador</div></div>
+        <div class="pwa-step"><div class="pwa-step-num">2</div><div class="pwa-step-text">Clique em <strong>"Instalar"</strong> ou <strong>"Adicionar ao Desktop"</strong></div></div>
+      </div>
+      <button class="pwa-install-btn" id="pwa-install-btn" onclick="PWA.instalar()">
+        <span>⬇</span> BAIXAR APP AGORA
+      </button>
+      <button class="pwa-dismiss" onclick="PWA.fechar()">Agora não</button>
     </div>
-    <button class="pwa-btn-install" id="pwa-btn-install" onclick="PWA.instalar()">
-      ⬇️ Instalar
-    </button>
-    <button class="pwa-btn-close" onclick="PWA.fechar()" title="Fechar">✕</button>
   </div>
 
   <script>
   /* ══ PWA INSTALL MODAL — SDInformática ══ */
   const PWA = {
     promptEvent: null,
-    pronto: false,
 
     init() {
+      // Captura evento nativo se disponível
       window.addEventListener('beforeinstallprompt', e => {
         e.preventDefault();
         this.promptEvent = e;
-        if(this.pronto) this._exibir();
       });
-      window.addEventListener('appinstalled', () => {
-        this.esconder();
-        const fab = document.getElementById('pwa-fab');
-        if(fab) fab.classList.remove('visible');
-      });
+      // App instalado com sucesso — fecha modal
+      window.addEventListener('appinstalled', () => this.esconder());
     },
 
-    // Chamado por ACESSO.liberar() após código correto
+    // Chamado por ACESSO.liberar() — SEMPRE mostra o modal
     ativar() {
-      this.pronto = true;
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches
                         || navigator.standalone === true;
-      if(isStandalone) return;
+      if(isStandalone) return; // já instalado como app, não mostrar
       setTimeout(() => this._exibir(), 800);
     },
 
     _exibir() {
-      const isIOS    = /iphone|ipad|ipod/i.test(navigator.userAgent);
-      const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
-      const btn      = document.getElementById('pwa-install-btn');
-      const stepsIOS = document.getElementById('pwa-steps-ios');
-      const stepsDK  = document.getElementById('pwa-steps-desktop');
-      const fab      = document.getElementById('pwa-fab');
+      const isIOS     = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      const isAndroid = /android/i.test(navigator.userAgent);
+      const btn       = document.getElementById('pwa-install-btn');
+      const sAndroid  = document.getElementById('pwa-steps-android');
+      const sIOS      = document.getElementById('pwa-steps-ios');
+      const sDK       = document.getElementById('pwa-steps-desktop');
 
-      if(fab) fab.classList.remove('visible');
-      if(stepsIOS) stepsIOS.style.display = 'none';
-      if(stepsDK)  stepsDK.style.display  = 'none';
+      // Limpa steps
+      [sAndroid, sIOS, sDK].forEach(el => { if(el) el.style.display = 'none'; });
 
-      if(isIOS) {
-        btn.textContent = '✓ ENTENDI, VAMOS LÁ!';
-        btn.onclick = () => PWA.fechar();
-        if(stepsIOS) stepsIOS.style.display = 'block';
-      } else if(this.promptEvent) {
+      if(this.promptEvent) {
+        // Chrome Android/Desktop com evento nativo — botão instala direto
         btn.innerHTML = '<span>⬇</span> BAIXAR APP AGORA';
         btn.onclick = () => PWA.instalar();
-        if(!isMobile && stepsDK) stepsDK.style.display = 'block';
-      } else {
+      } else if(isIOS) {
+        // iOS Safari — passo a passo
         btn.textContent = '✓ ENTENDI, VAMOS LÁ!';
         btn.onclick = () => PWA.fechar();
-        if(stepsDK) stepsDK.style.display = 'block';
+        if(sIOS) sIOS.style.display = 'block';
+      } else if(isAndroid) {
+        // Android sem evento (Chrome bloqueou temporariamente) — passo a passo
+        btn.textContent = '✓ ENTENDI, VAMOS LÁ!';
+        btn.onclick = () => PWA.fechar();
+        if(sAndroid) sAndroid.style.display = 'block';
+      } else {
+        // Desktop sem evento — passo a passo
+        btn.textContent = '✓ ENTENDI, VAMOS LÁ!';
+        btn.onclick = () => PWA.fechar();
+        if(sDK) sDK.style.display = 'block';
       }
 
       document.getElementById('pwa-overlay').classList.add('show');
     },
 
-    mostrar() {
-      const fab = document.getElementById('pwa-fab');
-      if(fab) fab.classList.remove('visible');
-      this._exibir();
-    },
+    mostrar() { this._exibir(); },
 
     esconder() {
       document.getElementById('pwa-overlay').classList.remove('show');
     },
 
-    fechar() {
-      this.esconder();
-      const fab = document.getElementById('pwa-fab');
-      if(fab) fab.classList.add('visible');
-    },
+    fechar() { this.esconder(); },
 
     instalar() {
       if(!this.promptEvent) return;
       this.promptEvent.prompt();
       this.promptEvent.userChoice.then(result => {
-        if(result.outcome === 'accepted') {
-          this.esconder();
-          const fab = document.getElementById('pwa-fab');
-          if(fab) fab.classList.remove('visible');
-        }
+        if(result.outcome === 'accepted') this.esconder();
         this.promptEvent = null;
       });
     }
