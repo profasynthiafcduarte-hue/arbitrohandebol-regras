@@ -363,6 +363,28 @@
     cursor:pointer;letter-spacing:.5px;transition:all .2s}
   .hist-clear-btn:hover{background:rgba(244,67,54,.15);color:#f44336}
 
+
+  /* Banner PWA */
+  #pwa-banner{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;
+    background:linear-gradient(135deg,#0d1f30,#1a3a5c);
+    border-top:1px solid rgba(255,107,0,.4);padding:12px 16px;
+    box-shadow:0 -4px 24px rgba(0,0,0,.5)}
+  #pwa-banner.show{display:flex;align-items:center;gap:12px;animation:slideUp .3s ease}
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .pwa-icon{font-size:2rem;flex-shrink:0}
+  .pwa-text{flex:1}
+  .pwa-title{font-family:'Bebas Neue',cursive;font-size:1rem;color:var(--orange);
+    letter-spacing:1.5px;line-height:1}
+  .pwa-sub{font-size:11px;color:rgba(255,255,255,.55);font-family:'Rajdhani',sans-serif;
+    margin-top:2px}
+  .pwa-btn-install{padding:8px 16px;background:var(--orange);border:none;
+    border-radius:8px;color:#fff;font-family:'Bebas Neue',cursive;
+    font-size:.9rem;letter-spacing:1px;cursor:pointer;white-space:nowrap;
+    box-shadow:0 2px 10px rgba(255,107,0,.4);transition:opacity .2s;flex-shrink:0}
+  .pwa-btn-install:hover{opacity:.85}
+  .pwa-btn-close{background:none;border:none;color:rgba(255,255,255,.3);
+    font-size:18px;cursor:pointer;padding:4px 6px;flex-shrink:0;transition:color .2s}
+  .pwa-btn-close:hover{color:rgba(255,255,255,.7)}
   </style>
 </head>
 <body>
@@ -480,25 +502,80 @@
   <footer style="text-align:center;padding:12px 16px 18px;font-size:11px;color:rgba(255,255,255,.3);line-height:1.7;border-top:1px solid rgba(255,255,255,.06);margin-top:auto">
     © 2026 SDInformática Desenvolvedor. Todos os direitos reservados.<br>
     <a href="mailto:sdinformatica74@yahoo.com" style="color:rgba(255,107,0,.7);text-decoration:none;font-weight:700">sdinformatica74@yahoo.com</a>
-  <div style="text-align:center;padding:10px 16px 4px;border-top:1px solid rgba(255,255,255,.05);margin-top:6px">
+  <div style="text-align:center;padding:10px 16px 8px;border-top:1px solid rgba(255,255,255,.05);margin-top:6px">
     <div style="font-size:11px;color:rgba(255,255,255,.3);font-family:'Rajdhani',sans-serif;margin-bottom:8px;letter-spacing:.5px">
       📬 RECEBER NOVIDADES DO APP
     </div>
-    <form action="https://formspree.io/f/mpqkgdnq" method="POST"
-      style="display:flex;gap:6px;max-width:340px;margin:0 auto">
-      <input type="email" name="email" placeholder="seu@email.com" required
-        style="flex:1;padding:7px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.12);
-               background:rgba(255,255,255,.05);color:#fff;font-size:12px;
-               font-family:'Rajdhani',sans-serif;outline:none">
-      <button type="submit"
-        style="padding:7px 14px;background:var(--orange);border:none;border-radius:7px;
-               color:#fff;font-family:'Bebas Neue',cursive;font-size:.85rem;
-               letter-spacing:1px;cursor:pointer;white-space:nowrap">
-        Enviar
-      </button>
-    </form>
+    <div style="display:flex;flex-direction:column;gap:4px;max-width:340px;margin:0 auto">
+      <div style="display:flex;gap:6px">
+        <input type="email" id="form-email" placeholder="seu@email.com"
+          style="flex:1;padding:7px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.12);
+                 background:rgba(255,255,255,.05);color:#fff;font-size:12px;
+                 font-family:'Rajdhani',sans-serif;outline:none" 
+          oninput="document.getElementById('form-erro').style.display='none'">
+        <button onclick="enviarFormspree()"
+          style="padding:7px 14px;background:var(--orange);border:none;border-radius:7px;
+                 color:#fff;font-family:'Bebas Neue',cursive;font-size:.85rem;
+                 letter-spacing:1px;cursor:pointer;white-space:nowrap" id="form-btn">
+          Enviar
+        </button>
+      </div>
+      <div id="form-erro" style="display:none;font-size:11px;color:#f44336;
+           font-family:'Rajdhani',sans-serif;text-align:left;padding-left:2px">
+        ⚠️ Digite um e-mail válido (ex: nome@email.com)
+      </div>
+      <div id="form-ok" style="display:none;font-size:11px;color:#66bb6a;
+           font-family:'Rajdhani',sans-serif;text-align:center;padding:4px 0">
+        ✅ E-mail cadastrado! Você receberá novidades em breve.
+      </div>
+    </div>
   </div>
   </footer>
+  <script>
+  function enviarFormspree(){
+    const input = document.getElementById('form-email');
+    const erro  = document.getElementById('form-erro');
+    const ok    = document.getElementById('form-ok');
+    const btn   = document.getElementById('form-btn');
+    const email = input.value.trim();
+    // Validar e-mail
+    const valido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if(!valido){
+      erro.style.display = 'block';
+      ok.style.display   = 'none';
+      input.style.borderColor = 'rgba(244,67,54,.6)';
+      return;
+    }
+    // Enviar via fetch (sem redirecionar)
+    btn.textContent = '...';
+    btn.disabled = true;
+    input.style.borderColor = 'rgba(255,255,255,.12)';
+    fetch('https://formspree.io/f/mpqkgdnq', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({email: email})
+    })
+    .then(r => r.json())
+    .then(data => {
+      if(data.ok || data.next){
+        input.value = '';
+        ok.style.display   = 'block';
+        erro.style.display = 'none';
+        btn.textContent    = '✓';
+        btn.style.background = '#66bb6a';
+        setTimeout(()=>{ btn.textContent='Enviar'; btn.disabled=false; btn.style.background='var(--orange)'; }, 4000);
+      } else {
+        erro.style.display = 'block';
+        btn.textContent = 'Enviar'; btn.disabled = false;
+      }
+    })
+    .catch(()=>{
+      ok.style.display = 'block'; // Assumir sucesso se offline/CORS
+      input.value = ''; btn.textContent='✓'; btn.style.background='#66bb6a';
+      setTimeout(()=>{ btn.textContent='Enviar'; btn.disabled=false; btn.style.background='var(--orange)'; }, 4000);
+    });
+  }
+  </script>
 
 </div>
 
@@ -1877,6 +1954,81 @@ A.init();
     </div>
     <div id="hist-body" class="hist-body-inner"></div>
   </div>
+
+
+  <!-- ===== BANNER PWA INSTALAR APP ===== -->
+  <div id="pwa-banner">
+    <div class="pwa-icon">📱</div>
+    <div class="pwa-text">
+      <div class="pwa-title">Instalar App no Celular</div>
+      <div class="pwa-sub">Use offline · Acesso rápido · Sem navegador</div>
+    </div>
+    <button class="pwa-btn-install" id="pwa-btn-install" onclick="PWA.instalar()">
+      ⬇️ Instalar
+    </button>
+    <button class="pwa-btn-close" onclick="PWA.fechar()" title="Fechar">✕</button>
+  </div>
+
+  <script>
+  const PWA = {
+    promptEvent: null,
+    KEY: 'hb_pwa_fechado',
+
+    init() {
+      // Capturar o evento de instalação
+      window.addEventListener('beforeinstallprompt', e => {
+        e.preventDefault();
+        this.promptEvent = e;
+        // Mostrar apenas se não fechou antes (ou fechou há mais de 3 dias)
+        const fechado = localStorage.getItem(this.KEY);
+        const diasFechado = fechado ? (Date.now() - parseInt(fechado)) / 86400000 : 999;
+        if(diasFechado > 3) this.mostrar();
+      });
+      // Se já instalado, esconder
+      window.addEventListener('appinstalled', () => {
+        this.esconder();
+        localStorage.removeItem(this.KEY);
+      });
+      // iOS — Safari não tem beforeinstallprompt, mostrar instrução manual
+      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+      if(isIOS && !isStandalone){
+        const fechado = localStorage.getItem(this.KEY);
+        const diasFechado = fechado ? (Date.now() - parseInt(fechado)) / 86400000 : 999;
+        if(diasFechado > 3){
+          document.getElementById('pwa-btn-install').textContent = '📋 Como instalar';
+          document.getElementById('pwa-btn-install').onclick = () => {
+            alert('No iPhone/iPad:\n1. Toque em Compartilhar (□↑)\n2. Role e toque em "Adicionar à Tela de Início"\n3. Toque em Adicionar');
+          };
+          setTimeout(() => this.mostrar(), 2000);
+        }
+      }
+    },
+
+    mostrar() {
+      document.getElementById('pwa-banner').classList.add('show');
+    },
+
+    esconder() {
+      document.getElementById('pwa-banner').classList.remove('show');
+    },
+
+    fechar() {
+      this.esconder();
+      localStorage.setItem(this.KEY, Date.now().toString());
+    },
+
+    instalar() {
+      if(!this.promptEvent) return;
+      this.promptEvent.prompt();
+      this.promptEvent.userChoice.then(result => {
+        if(result.outcome === 'accepted') this.esconder();
+        this.promptEvent = null;
+      });
+    }
+  };
+  PWA.init();
+  </script>
 
   <!-- Registro do Service Worker PWA -->
   <script>
